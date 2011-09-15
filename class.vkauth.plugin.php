@@ -1,9 +1,9 @@
 <?php if (!defined('APPLICATION')) exit();
 
 $PluginInfo['VkAuth'] = array(
-	'Name' => 'VkAuth',
-	'Description' => 'Vkontakte authentication for Garden. This is highly modified Facebook Connect plugin.',
-	'Version' => '1.14',
+	'Name' => 'Vkontakte Authentication',
+	'Description' => 'Vkontakte authentication for Garden. This is modified Facebook Connect plugin.',
+	'Version' => '1.15',
 	'MobileFriendly' => True,
 	'SettingsUrl' => '/dashboard/settings/vkauth',
 	'SettingsPermission' => 'Garden.Settings.Manage'
