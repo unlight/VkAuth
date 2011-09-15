@@ -7,7 +7,7 @@ IMPORTANT!!!
 ============
 It is not fucking joke.
 This plugin wont work, due to postback bug: https://github.com/vanillaforums/Garden/issues/1085
-You should fix it manually, see commit:
+You should fix it, see commit:
 https://github.com/unlight/Garden/commit/7524c69cc5f085b09b6a3c9955f37e465a0ff640
 
 Setup
