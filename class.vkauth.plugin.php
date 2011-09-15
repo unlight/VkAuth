@@ -3,7 +3,7 @@
 $PluginInfo['VkAuth'] = array(
 	'Name' => 'VkAuth',
 	'Description' => 'Vkontakte authentication for Garden. This is highly modified Facebook Connect plugin.',
-	'Version' => '1.13',
+	'Version' => '1.14',
 	'MobileFriendly' => True,
 	'SettingsUrl' => '/dashboard/settings/vkauth',
 	'SettingsPermission' => 'Garden.Settings.Manage'
@@ -54,7 +54,7 @@ class VkAuthPlugin extends Gdn_Plugin {
 	public function EntryController_SignIn_Handler($Sender, $Args) {
         if (!$this->IsConfigured()) return;
 		if (isset($Sender->Data['Methods'])) {
-			$Img = Img('plugins/VkAuth/design/vkontakte-login.gif', array('alt' => T('Login with Vkontakte')));
+			$Img = Img('plugins/VkAuth/design/vkontakte-login.png', array('alt' => T('Login with Vkontakte')));
 			$VkMethod = array('Name' => 'VkAuth', 'SignInHtml' => $this->SignInHtml($Img));
 			$Sender->Data['Methods'][] = $VkMethod;
 		}
