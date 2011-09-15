@@ -1,0 +1,19 @@
+VkAuth
+======
+Vkontakte authentication for Garden. This is highly modified Facebook Connect plugin.
+So be gentle.
+
+IMPORTANT!!!
+============
+It is not fucking joke.
+This plugin wont work, due to postback bug: https://github.com/vanillaforums/Garden/issues/1085
+You should fix it manually, see commit:
+https://github.com/unlight/Garden/commit/7524c69cc5f085b09b6a3c9955f37e465a0ff640
+
+Setup
+=====
+1. Enable plugin.
+2. Create Vkontakte application http://vkontakte.ru/apps.php?act=add
+3. You will get Application ID and secure key (secret).
+4. Go to yousite.com/dashboard/settings/vkauth
+5. Save Application ID and Secure Key to config (just press Save button).
