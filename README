@@ -1,19 +1,43 @@
-VkAuth
-======
-Vkontakte authentication for Garden. This is highly modified Facebook Connect plugin.
-So be gentle.
+DESCRIPTION
+===========
+Vkontakte authentication for Garden. This is modified Facebook Connect plugin.
 
-IMPORTANT!!!
-============
-It is not fucking joke.
+SETUP
+=====
+1. Enable plugin.
+2. Create Vkontakte application http://vkontakte.ru/editapp?act=create&site=1
+3. You will get Application ID and secure key (secret).
+4. Go to yousite.com/dashboard/settings/vkauth
+5. Save Application ID and Secure Key to config (just press Save button).
+
+IMPORTANT IF YOU HAVE VANILLA < 2.0.18
+======================================
 This plugin wont work, due to postback bug: https://github.com/vanillaforums/Garden/issues/1085
 You should fix it, see commit:
 https://github.com/unlight/Garden/commit/7524c69cc5f085b09b6a3c9955f37e465a0ff640
 
-Setup
-=====
-1. Enable plugin.
-2. Create Vkontakte application http://vkontakte.ru/apps.php?act=add
-3. You will get Application ID and secure key (secret).
-4. Go to yousite.com/dashboard/settings/vkauth
-5. Save Application ID and Secure Key to config (just press Save button).
+THIS BUG WAS FIXED ON SEPTEMBER 29, 2011.
+https://github.com/vanillaforums/Garden/commit/e3f6be6f6caac0aa5b5a850425277ae89657dd7e
+
+CHANGELOG
+=========
+1.30 (20 Nov 2011)
+- fallback connect name changed to firstname
+- used photo_big (width 200px) for photo
+- removed unused image
+- updated documentation
+- added translations (ru)
+
+1.15 (16 Sep 2011)
+- description changed
+- some images are changed
+- added screenshots
+
+1.14 (15 Sep 2011)
+- some images are changed
+
+1.12 (15 Sep 2011)
+- first public release
+
+1.10 (14 Sep 2011)
+- beta release

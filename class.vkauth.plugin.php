@@ -1,9 +1,9 @@
-<?php if (!defined('APPLICATION')) exit();
+<?php if (!defined('APPLICATION')) die();
 
 $PluginInfo['VkAuth'] = array(
 	'Name' => 'Vkontakte Authentication',
 	'Description' => 'Vkontakte authentication for Garden. This is modified Facebook Connect plugin.',
-	'Version' => '1.15',
+	'Version' => '1.30',
 	'MobileFriendly' => True,
 	'SettingsUrl' => '/dashboard/settings/vkauth',
 	'SettingsPermission' => 'Garden.Settings.Manage'
@@ -166,24 +166,25 @@ class VkAuthPlugin extends Gdn_Plugin {
             }
 		}
 		$Form = $Sender->Form;
-		$ID = GetValue('id', $Profile);
-		$Form->SetFormValue('UniqueID', $ID);
+		$Form->SetFormValue('UniqueID', $Profile['UniqueID']);
 		$Form->SetFormValue('Provider', 'vkauth');
 		$Form->SetFormValue('ProviderName', 'Vkontakte');
 		$Form->SetFormValue('FullName', GetValue('FullName', $Profile));
 		$Name = GetValue('nickname', $Profile);
-		if (!$Name) $Name = GetValue('FullName', $Profile);
+		if (!$Name) $Name = GetValue('FirstName', $Profile);
 		$Form->SetFormValue('Name', $Name);
 		// Vk API doesnt give us email.
-		$Email = GetValue('email', $Profile);
-		if ($Email) $Form->SetFormValue('Email', $Email);
-		$Form->SetFormValue('Photo', GetValue('Photo', $Profile));
-		$Sender->SetData('Verified', TRUE);
+		if ($Email = GetValue('email', $Profile)) $Form->SetFormValue('Email', $Email);
+		if ($Photo = GetValue('Photo', $Profile)) $Form->SetFormValue('Photo', $Photo);
+		$Sender->SetData('Verified', True);
 	}
 
+	/**
+	* Documentation is here: http://vkontakte.ru/developers.php?oid=-1&p=getProfiles
+	* 
+	*/
 	public function GetProfile($AccessToken, $VkUserID) {
-		// city,country,photo_medium
-		$Parameters = 'uids='.$VkUserID.'&fields=uid,first_name,last_name,nickname,sex,bdate,photo';
+		$Parameters = 'uids='.$VkUserID.'&fields=uid,first_name,last_name,nickname,screen_name,sex,bdate,city,country,timezone,photo,photo_medium,photo_big';
 		$MethodName = 'getProfiles';
 		$Url = "https://api.vkontakte.ru/method/{$MethodName}?{$Parameters}&access_token=$AccessToken";
 		$Contents = file_get_contents($Url);
@@ -196,24 +197,25 @@ class VkAuthPlugin extends Gdn_Plugin {
 		// Build profile.
 		$data = $Result['response'][0];
 		$Profile = $data;
+		$Profile['UniqueID'] = $data['uid'];
 		$Profile['FirstName'] = $data['first_name'];
 		$Profile['Gender'] = ($data['sex'] == 1) ? 'f' : 'm';
 		$Profile['FamilyName'] = $data['last_name'];
-		$Profile['FullName'] = $data['first_name'] . ' ' . $data['last_name'];
-		$Profile['id'] = $data['uid'];
-		$Profile['name'] = $data['first_name'];
-		$Profile['Photo'] = $data['photo'];
-		$Profile['DateOfBirth'] = Gdn_Format::ToDateTime(strtotime($data['bdate']));
-		// uid	Z
-		// first_name	X
-		// last_name	Y
-		// nickname	 
-		// sex	2
-		// bdate	29.8.1983
-		// city	125
-		// country	1
-		// photo	
-		// photo_medium	
+		$Profile['FullName'] = trim($data['first_name'] . ' ' . $data['last_name']);
+		$Profile['Photo'] = $data['photo_big'];
+		if (array_key_exists('bdate', $data)) $Profile['DateOfBirth'] = Gdn_Format::ToDateTime(strtotime($data['bdate']));
+		
+		// Get city
+		$Parameters = 'cids='.GetValue('city', $data);
+		$Url = "https://api.vkontakte.ru/method/places.getCityById?{$Parameters}&access_token=$AccessToken";
+		$Contents = file_get_contents($Url);
+		$Result = json_decode($Contents, True);
+		if (isset($Result['error']) || $Result == False) {
+			$ErrorCode = GetValueR('error.error_code', $Result, 500);
+			$ErrorMesssage = GetValueR('error.error_msg', $Result, 'Unknown error');
+			throw new Gdn_UserException($ErrorMesssage, $ErrorCode);
+		}
+		$Profile['City'] = GetValueR('response.0.name', $Result);
 		return $Profile;
 	}
 

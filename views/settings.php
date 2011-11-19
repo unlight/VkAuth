@@ -31,7 +31,8 @@ echo $this->Form->Errors();
 		?>
 	</div>
 	<div class="Info ConfigurationHelp">
-		<p>In order to set up VkAuth, you must create an application at: <a href="http://vkontakte.ru/editapp?act=create">http://vkontakte.ru/editapp?act=create</a></p>
+		<p>In order to set up VkAuth, you must create an application at: 
+		<a href="http://vkontakte.ru/editapp?act=create&site=1">http://vkontakte.ru/editapp?act=create&site=1</a></p>
 		<p>
 			When you create the Vkontakte application, you can choose what to enter in most fields.<br/>
 			But make sure you enter the following value in the "Home domain" field:
